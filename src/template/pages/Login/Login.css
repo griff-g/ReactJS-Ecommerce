@@ -1,0 +1,13 @@
+/* Login Form */
+.login {
+	display: grid;
+	place-items: center;
+}
+.form-login {
+	flex-direction: column;
+	width: 400px;
+	height: auto;
+	margin: 0 auto;
+	padding: 1rem;
+	background: #ffffff;
+}

@@ -1,0 +1,27 @@
+.nav{
+	margin: 1rem;
+}
+.nav-list {
+	justify-content: flex-end;
+	align-items: center;
+	height: 100%;
+	padding: 1rem;
+}
+.nav-item {
+	margin-right: 2rem;
+	list-style: none;
+	transition: all 200ms ease-in;
+	font-weight: 700;
+}
+.nav-item a {
+	text-decoration: none;
+	color: inherit;
+}
+.nav-item a:hover {
+	color: var(--clr-gray200);
+}
+.nav-item:first-child {
+	margin-right: auto;
+	margin-left: 2rem;
+}
+

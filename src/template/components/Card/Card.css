@@ -1,0 +1,26 @@
+.image-card {
+	overflow: hidden;
+	width: 300px;
+    min-width: 300px;
+	height: 300px;
+    min-height: 300px;
+    margin: 4px;
+}
+.image-card figure {
+	width: 100%;
+	height: auto;
+}
+.image-card img {
+	width: 100%;
+	height: 80%;
+}
+.image-card figcaption {
+    flex-direction: column;
+	text-align: left;
+    margin: auto 5px;
+}
+
+
+.image-card small{
+    font-size: 0.8rem;
+}
