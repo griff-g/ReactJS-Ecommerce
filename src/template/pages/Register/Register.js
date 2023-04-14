@@ -1,14 +1,58 @@
 import React from "react";
 import "./Register.css";
-import { useState,useEffect } from "react";
-import { Link } from "react-router-dom";
-
+import { useState} from "react";
+import { Link, useHistory } from "react-router-dom";
+import AxiosInstance from "../../../helpers/axios.helper";
 
 const Register = () => {
+	const [formValues, setFormValues] = useState({
+		phone: {
+			phone_number: null,
+			country_code: null,
+		},
+	});
+	const [showOTP,setShowOTP] = useState(false)
+	const [verifyOTP,setVerifyOTP] = useState({phone_number:formValues.phone.phone_number})
+	
+ 
+	const history = useHistory();
+
+	const handleInputChange = (event) => {
+		if (["phone_number", "country_code"].includes(event.target.name)) {
+			setFormValues({
+				...formValues,
+				phone: {
+					...formValues.phone,
+					[event.target.name]: event.target.value,
+				},
+			});
+		} else {
+			setFormValues({ ...formValues, [event.target.name]: event.target.value });
+		}
+	};
+
+	const signupUser = async (event) => {
+		event.preventDefault();
+		try {
+			const {data} = await AxiosInstance.post("/user/auth/signup", formValues);
+			console.log("=== Response ==", data.data);
+			localStorage.setItem(
+				"otp_payload",
+				JSON.stringify({
+					phone_number: formValues.phone.phone_number,
+					otp_token: data.data.otp_token,
+				})
+			);
+			history.push("/otp");
+		} catch (error) {
+			alert(error.message);
+		}
+	};
+
 	return (
-		<section class="register">
-			<form class="register-form container flex" action="">
-				<div class="form-header">
+		<section className="register">
+			<form className="register-form container flex" onSubmit={signupUser}>
+				<div className="form-header">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						width="24"
@@ -27,37 +71,76 @@ const Register = () => {
 					</svg>
 					<p>Enter your details to Register</p>
 				</div>
-				<div class="form-item">
-					<input type="text" class="form-input" placeholder="username" />
+				<div className="form-item">
+					<input
+						type="text"
+						className="form-input"
+						placeholder="email@example.com"
+						name="email"
+						value={formValues.email || ""}
+						onChange={handleInputChange}
+					/>
 				</div>
-				<div class="form-item">
-					<input type="text" class="form-input" placeholder="first name" />
+				<div className="form-item">
+					<input
+						type="text"
+						className="form-input"
+						placeholder="first name"
+						name="first_name"
+						value={formValues.first_name || ""}
+						onChange={handleInputChange}
+					/>
 				</div>
-				<div class="form-item">
-					<input type="text" class="form-input" placeholder="last name" />
+				<div className="form-item">
+					<input
+						type="text"
+						className="form-input"
+						placeholder="last name"
+						name="last_name"
+						value={formValues.last_name || ""}
+						onChange={handleInputChange}
+					/>
 				</div>
-				<div class="form-item">
-					<input type="text" class="form-input" placeholder="email@example.com" />
-				</div>
-				<div class="form-item">
+				<div className="form-item">
 					<span>
-						<select className="form-input" name="" id="">
-							<option value="" disabled>Country</option>
-							<option value="test">test</option>
-							<option value="test">test2</option>
+						<select
+							className="form-input"
+							name="country_code"
+							onChange={handleInputChange}
+							value={formValues.phone.c}
+						>
+							<option value="" disabled>
+								Country
+							</option>
+							<option value="+1">+1</option>
+							<option value="+91">+91</option>
 						</select>
-					<input type="text" class="form-input" placeholder="phone number" />
+						<input
+							type="text"
+							className="form-input"
+							placeholder="phone number"
+							name="phone_number"
+							value={formValues.phone.phone_number}
+							onChange={handleInputChange}
+						/>
 					</span>
 				</div>
 				<div class="form-item">
-					<input type="password" class="form-input" placeholder="password" />
+					<input
+						type="password"
+						className="form-input"
+						placeholder="password"
+						name="password"
+						value={formValues.password || ""}
+						onChange={handleInputChange}
+					/>
 				</div>
 				<div class="form-item">
-					<button class="btn-primary" type="submit">
+					<button className="btn-primary" type="submit">
 						Sign Up
 					</button>
 				</div>
-				<div class="form-footer">
+				<div className="form-footer">
 					Already have an account? <Link to="/login">Login</Link>
 				</div>
 			</form>
