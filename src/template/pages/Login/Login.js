@@ -1,12 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "../../components/Button/Button";
 import "./Login.css";
 import { Link } from "react-router-dom";
+import AxiosInstance from "../../../helpers/axios.helper";
 
 const Login = () => {
+	const [formValues, setFormValues] = useState({});
+
+	const handleInputChange = (e) => {
+		setFormValues({ ...formValues, [e.target.name]: e.target.value });
+	};
+
+	const loginUser = async (e) => {
+		e.preventDefault();
+		try {
+			const { data } = await AxiosInstance.post(
+				"/user/auth/login/username-password",
+				formValues
+			);
+			console.log(data);
+		} catch (error) {
+			console.log(error);
+		}
+	};
 	return (
 		<section className="login">
-			<form className="form-login container flex" action="">
+			<form className="form-login container flex" action="" onSubmit={loginUser}>
 				<div className="form-header">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -25,10 +44,22 @@ const Login = () => {
 					<p>Login to access your dashboard</p>
 				</div>
 				<div className="form-item">
-					<input type="text" className="form-input" placeholder="email@example.com" />
+					<input
+						type="text"
+						className="form-input"
+						placeholder="email@example.com"
+						name="username"
+						onChange={handleInputChange}
+					/>
 				</div>
 				<div className="form-item">
-					<input type="password" className="form-input" placeholder="password" />
+					<input
+						type="password"
+						className="form-input"
+						placeholder="password"
+						name="password"
+						onChange={handleInputChange}
+					/>
 				</div>
 				<div className="form-item">
 					<Button btnType={"primary"} btnText={"Login"} />
